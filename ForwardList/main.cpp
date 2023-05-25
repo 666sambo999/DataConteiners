@@ -45,10 +45,54 @@ public:
 		New->pNext = Head; //2) включам новый элемент в список 
 		Head = New; // переносим голову на новый элемент 
 	} 
+	void push_back(int Data)
+	{
+		if (Head == nullptr)return push_front(Data);
+		Element* New = new Element(Data);
+		Element* Temp = Head;
+		while (Temp->pNext)
+		{
+			Temp = Temp->pNext;
+		}
+		Temp->pNext = New;
+	}
+	void insert(int Data, int index)
+	{
+		//1) Сщздаем новый элемент 
+		Element* New = new Element(Data);
+		//2)  доходим до нужного элемента
+		Element* Temp = Head;
+		for (int i = 0; i < index - 1; i++)Temp = Temp->pNext;
+		//3) включаем созданный элемент в список
+		New->pNext = Temp->pNext;
+		Temp->pNext = New;
+	}
+
+	//			Removing element 
+	void pop_front()
+	{
+		Element* Erased = Head; // 1) запоминаем адрес удаляемого эдемента 
+		Head=Head->pNext; //2) Исключаем удаляемый элемент из списка
+		delete Erased;	  // 3) удаляем элемент из памяти 
+	}
+	void pop_back()
+	{
+		Element* Temp = Head;
+		while (Temp->pNext->pNext)
+		{
+			Temp = Temp->pNext;
+		}
+		delete Temp->pNext;
+		Temp->pNext = nullptr;
+	}
 
 	//		Methods
 	void print()const
 	{
+		/*для того чтобы перемнщатся по списку нужно две вещи
+		* 1. итератор 
+		* 2. цикл 
+		*/
 		Element* Temp = Head;	// Temp -  это итератор,
 		// итератор - это указатель, при помощи которого можно получить доступ к элементам структуры данных   
 		while (Temp)
@@ -69,7 +113,20 @@ void main()
 	ForwardList list;
 	for (int i = 0; i < n; i++)
 	{
-		list.push_front(rand() % 100);
+		//list.push_front(rand() % 100);
+		list.push_back(rand()%100);
 	}
+	//list.push_back(321);
 	list.print();
+	//list.pop_front();
+	//list.print();
+	//list.pop_back();
+	
+	int value;
+	int index;
+	cout << "Введите значение добавляемого значения: "; cin >> value;
+	cout << "Введите индекс добавляемого значения: "; cin >> index;
+	list.insert(value,index);
+	list.print();
+
 }
