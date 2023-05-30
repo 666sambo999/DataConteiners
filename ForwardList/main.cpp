@@ -35,6 +35,8 @@ public:
 	}
 	~ForwardList()
 	{
+		//while (Head)pop_front();
+		while (Head)pop_back();
 		cout << "LDestructor:\t" << this << endl; 
 	}
 
@@ -56,9 +58,10 @@ public:
 		}
 		Temp->pNext = New;
 	}
+
 	void insert(int Data, int index)
 	{
-		//1) Сщздаем новый элемент 
+		//1) Сoздаем новый элемент 
 		Element* New = new Element(Data);
 		//2)  доходим до нужного элемента
 		Element* Temp = Head;
@@ -66,6 +69,17 @@ public:
 		//3) включаем созданный элемент в список
 		New->pNext = Temp->pNext;
 		Temp->pNext = New;
+	}
+	void erase(int index)
+	{
+		Element* Temp = Head;
+		for (int i=0; i<index-1;i++)
+		{
+			Head = Temp->pNext;
+		}
+			
+		delete Temp;
+		//Head->pNext = nullptr;
 	}
 
 	//			Removing element 
@@ -77,6 +91,7 @@ public:
 	}
 	void pop_back()
 	{
+		if (Head->pNext == nullptr)return pop_front();
 		Element* Temp = Head;
 		while (Temp->pNext->pNext)
 		{
@@ -91,8 +106,8 @@ public:
 	{
 		/*для того чтобы перемнщатся по списку нужно две вещи
 		* 1. итератор 
-		* 2. цикл 
-		*/
+		* 2. цикл */
+		
 		Element* Temp = Head;	// Temp -  это итератор,
 		// итератор - это указатель, при помощи которого можно получить доступ к элементам структуры данных   
 		while (Temp)
@@ -101,8 +116,6 @@ public:
 			Temp = Temp->pNext; // переход на новый элемент 
 		}
 	}
-
-
 };
 
 void main()
@@ -122,11 +135,15 @@ void main()
 	//list.print();
 	//list.pop_back();
 	
-	int value;
+	/*int value;
 	int index;
 	cout << "Введите значение добавляемого значения: "; cin >> value;
 	cout << "Введите индекс добавляемого значения: "; cin >> index;
-	list.insert(value,index);
+	list.insert(value,index);*/
+	
+	int index;
+	cout << "Введите индекс удаляемого значения: "; cin >> index;
+	list.erase(index);
 	list.print();
 
 }
