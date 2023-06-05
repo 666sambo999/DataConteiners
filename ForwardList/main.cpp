@@ -55,7 +55,7 @@ public:
 		Temp = Temp->pNext;
 		return *this;
 	}
-	Iterator operator++(int)
+	Iterator operator++(int) // перегружаем ++
 	{
 		Iterator old = *this;
 		Temp = Temp->pNext;
@@ -153,7 +153,6 @@ public:
 		cout << "MoveAssignment:\t" << this << endl;
 		return *this;
 	}
-
 	//				Adding elements:
 	void push_front(int Data)
 	{
@@ -162,7 +161,6 @@ public:
 		New->pNext = Head;	//2) Включаем новый элемент в список
 		Head = New;		//3) Переносим Голову на новый элемент
 		*/
-
 		Head = new Element(Data, Head);
 		size++;
 	}
@@ -246,7 +244,6 @@ public:
 
 		for (Element* Temp = Head; Temp; Temp = Temp->pNext)
 			cout << Temp << tab << Temp->Data << tab << Temp->pNext << endl;
-
 		cout << "Количество элементов списка: " << size << endl;
 		cout << "Общее количество элементов:  " << Head->count << endl;
 	}
