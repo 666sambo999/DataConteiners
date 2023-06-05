@@ -124,7 +124,7 @@ public:
 		cout << "LDestructor:\t" << this << endl;
 	}
 
-	//				Operators
+	//				Operators:
 	ForwardList& operator=(const ForwardList& other)
 	{
 		if (this == &other)return *this;
@@ -154,18 +154,21 @@ public:
 		return *this;
 	}
 
-	// Adding element:
+	//				Adding elements:
 	void push_front(int Data)
 	{
-		//Element* New = new Element(Data); //1) создаем новый элемент 
-		//New->pNext = Head; //2) включам новый элемент в список 
-		//Head = New; // переносим голову на новый элемент 
-		Element* New = new Element(Data, Head);
+		/*
+		Element* New = new Element(Data);	//1) Создаем новый элемент
+		New->pNext = Head;	//2) Включаем новый элемент в список
+		Head = New;		//3) Переносим Голову на новый элемент
+		*/
+
+		Head = new Element(Data, Head);
 		size++;
 	}
 	void push_back(int Data)
 	{
-		if (Head == nullptr)return push_front(Data); // 
+		if (Head == nullptr)return push_front(Data);
 		Element* Temp = Head;
 		while (Temp->pNext)
 		{
@@ -174,38 +177,26 @@ public:
 		Temp->pNext = new Element(Data);
 		size++;
 	}
-
-	void insert(int Data, int index)
+	void insert(int Data, int Index)
 	{
-		if (index == 0)return push_front(Data);
-		if (index > size)return;
+		if (Index == 0)return push_front(Data);
+		if (Index > size)return;
 		//1) Создаем новый элемент:
 		//Element* New = new Element(Data);
 		//2) Доходим до нужного элемента:
 		Element* Temp = Head;
-		for (int i = 0; i < index - 1; i++)Temp = Temp->pNext;
+		for (int i = 0; i < Index - 1; i++)Temp = Temp->pNext;
 		//3) Включаем созданный элементв список:
 		Temp->pNext = new Element(Data, Temp->pNext);
 		size++;
 	}
-	void erase(int index)
-	{
-		Element* Temp = Head;
-		for (int i = 0; i < index - 1; i++)
-		{
-			Head = Temp->pNext;
-		}
 
-		delete Temp;
-		//Head->pNext = nullptr;
-	}
-
-	//			Removing element 
+	//				Removing elements:
 	void pop_front()
 	{
-		Element* Erased = Head; // 1) запоминаем адрес удаляемого эдемента 
-		Head = Head->pNext; //2) Исключаем удаляемый элемент из списка
-		delete Erased;	  // 3) удаляем элемент из памяти 
+		Element* Erased = Head;	//1) Запоминаем адрес удаляемого элемента
+		Head = Head->pNext;		//2) Исключаем удаляемый элемент из списка
+		delete Erased;			//3) Удаляем элемент из памяти
 		size--;
 	}
 	void pop_back()
@@ -220,6 +211,8 @@ public:
 		Temp->pNext = nullptr;
 		size--;
 	}
+
+	//				Methods:
 	void reverse()
 	{
 		ForwardList reverse;
@@ -232,38 +225,46 @@ public:
 		this->Head = reverse.Head;
 		reverse.Head = nullptr;
 	}
-	//		Methods
 	void print()const
 	{
-		/*для того чтобы перемнщатся по списку нужно две вещи
-		* 1. итератор
-		* 2. цикл */
-		cout << "\n -------------------------" << this << "----------------------\n" << endl;
-		cout << "Head" << Head << endl;
-		//Element* Temp = Head;	// Temp -  это итератор,
-		// итератор - это указатель, при помощи которого можно получить доступ к элементам структуры данных   
-		//while (Temp)
-		//{
-		//	cout << Temp << tab << Temp->Data << tab << Temp->pNext << endl; 
-		//	Temp = Temp->pNext; // переход на новый элемент 
-		//}
+		/*
+		-----------------------
+		Для того чтобы перемещаться по списку нужно две вещи:
+			1. Итератор;
+			2. Цикл;
+		-----------------------
+		*/
+		cout << "\n-----------------" << this << "-----------------\n";
+		cout << "Head: " << Head << endl;
+		/*Element* Temp = Head;	//Temp - это итератор.
+		//Итератор - это указатель, при помощи которого можно получить доступ к элементам структуры данных.
+		while (Temp)
+		{
+			cout << Temp << tab << Temp->Data << tab << Temp->pNext << endl;
+			Temp = Temp->pNext;	//Переход на следующий элемент
+		}*/
+
 		for (Element* Temp = Head; Temp; Temp = Temp->pNext)
 			cout << Temp << tab << Temp->Data << tab << Temp->pNext << endl;
-		cout << "Количество элементов списка: " << size << endl;
-		cout << "Общее количество элементов списка: " << Head->count << endl;
 
+		cout << "Количество элементов списка: " << size << endl;
+		cout << "Общее количество элементов:  " << Head->count << endl;
 	}
-	
 };
+
 ForwardList operator+(const ForwardList& left, const ForwardList& right)
-	{
-		ForwardList cat = left;
-		for (Iterator it = right.begin(); it != right.end(); ++it)
-			cat.push_back(*it);
-		return cat;
-	}
+{
+	ForwardList cat = left;
+	for (Iterator it = right.begin(); it != right.end(); ++it)
+		cat.push_back(*it);
+	return cat;
+}
+
 //#define BASE_CHECK
 //#define COPY_CHECK
+//#define PREFORMANCE_CHECK
+//#define RANGE_BASED_FOR_ARRAY
+//#define ITERATORS_CHECK
 
 void main()
 {
@@ -285,6 +286,7 @@ void main()
 	//list.pop_back();
 	int value;
 	int index;
+
 	cout << "Введите значение добавляемого элемента: "; cin >> value;
 	cout << "Введите индекс добавляемого элемента: "; cin >> index;
 	list.insert(value, index);
@@ -313,6 +315,7 @@ void main()
 	list2.print();
 #endif // COPY_CHECK
 
+#ifdef PREFORMANCE_CHECK
 	int n;
 	cout << "Введите размер списка: "; cin >> n;
 	ForwardList list;
@@ -323,15 +326,16 @@ void main()
 		list.push_front(rand() % 100);
 	}
 	clock_t t_end = clock();
-	cout << "Данные загружены за " << double(t_end - t_start)/CLOCKS_PER_SEC << endl;
-	list.print();
+	cout << "Данные загружены за " << double(t_end - t_start) / CLOCKS_PER_SEC << endl;
+	//list.print();
 	cout << delimiter << endl;
-	cout << "Копируем список: " << endl; 
+	cout << "Копируем список: " << endl;
 	t_start = clock();
 	ForwardList list2 = list;
 	t_end = clock();
 	cout << "Список скопирован за " << double(t_end - t_start) / CLOCKS_PER_SEC << " секунд." << endl;
-	list2.print();
+	//list2.print();  
+#endif // PREFORMANCE_CHECK
 
 #ifdef RANGE_BASED_FOR_ARRAY
 	long long arr[] = { 3, 5, 8, 13, 21 };
@@ -370,5 +374,4 @@ void main()
 	ForwardList list3;
 	list3 = list1 + list2;	//MoveAssignment
 	for (int i : list3)cout << i << tab; cout << endl;
-
 }
