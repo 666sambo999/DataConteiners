@@ -1,7 +1,7 @@
 ﻿#include<iostream>
-
+#include <ctime>
 using namespace std;
-
+using std::cout;
 
 #define tab "\t"
 #define delimetr  "\n---------------------------------------\n"
@@ -18,21 +18,93 @@ class List
 		Element(int Data, Element* pNext = nullptr, Element* pPrev = nullptr) 
 			: Data(Data), pNext(pNext), pPrev(pPrev) // инициализация в заголовке
 		{
-			cout << "EConstructor:\t" << this << endl; 
+#ifdef DEBUG
+			cout << "EConstructor:\t" << this << endl;
+#endif // DEBUG
 		}
 		~Element()
 		{
+#ifdef DEBUG			
 			cout << "EDestructor:\t" << this << endl; 
+#endif // DEBUG
 		}
 		friend class List;
 	}*Head,*Tail; // объекты и указатели на объекты можно объявлять сражу после описания класса
 	size_t size;			// это псевдоним для типа данных 
 public:
+	class Iterator 
+	{
+		Element* Temp;
+	public: 
+		Iterator(Element* Temp) :Temp(Temp)
+		{
+#ifdef DEBUG
+			cout << "ItConstructor\t" << this << endl;
+#endif // DEBUG
+
+		}
+		~Iterator()
+		{
+#ifdef DEBUG
+			cout << "ItDestructor\t" << this << endl;
+#endif // DEBUG
+
+		}
+		Iterator operator ++()
+		{
+			Temp = Temp->pNext;
+			return *this;
+		}
+		Iterator operator ++(int)
+		{
+			Iterator old = *this;
+			Temp = Temp->pNext;
+			return old;
+		}
+		Iterator& operator--()
+		{
+			Temp = Temp->pPrev;
+			return *this;
+		}
+		Iterator operator --(int)
+		{
+			Iterator old = *this;
+			Temp = Temp->pPrev;
+			return old;
+		}
+		bool operator==(const Iterator& other)const
+		{
+			return this->Temp == other.Temp;
+		}
+		bool operator!=(const Iterator& other)const
+		{
+			// return !(*this == other);
+			return this->Temp != other.Temp; // будет быстрее, так как проц сравгивает адреса
+		}
+
+		int& operator*()
+		{
+			return Temp->Data;
+		}
+	};
+	Iterator begin()
+	{
+		return Head;
+	}
+	Iterator end()
+	{
+		return nullptr;
+	}
+	//			Constructors 
 	List()
 	{
 		Head = Tail = nullptr;
 		size = 0;
 		cout << "LConstructor:\t" << this << endl; 
+	}
+	List(int size)
+	{
+		while (size--)push_back(int());
 	}
 	List(const std::initializer_list<int>& il) :List()
 	{
@@ -158,7 +230,6 @@ public:
 		size--;
 	}
 
-
 	//			Methods
 	void print()
 	{
@@ -174,7 +245,8 @@ public:
 	}
 };
 
-#//define Base_Check
+//#define Base_Check
+#define Home_Work1
 
 void main()
 {
@@ -213,6 +285,42 @@ void main()
 	list.revers_print();
 #endif // Base_Check
 
-	List list = { 3,5,8,13,21 };
-	list.print();
+	clock_t t_start, t_end;
+	int sum = 0;
+	t_start = clock();
+	List list(2000000);
+	t_end = clock();
+	cout << "Список создан за " << double(t_end - t_start) / CLOCKS_PER_SEC << " секунд\n";
+
+	//List list = { 3,5,8,13,21 };
+	//list.print();
+	
+#ifdef Home_Work1
+	t_start = clock();
+	for (int i : list)
+	{
+		//cout << i << tab;
+		sum += i; 
+	}
+	cout << endl;
+	t_end = clock();
+	cout << "Сумма найдена за " << double(t_end - t_start) / CLOCKS_PER_SEC << " секунд\n";
+	cout << delimetr << endl; 
+	/*List::Iterator begin = list.begin();
+	List::Iterator end = list.end();
+	for (List::Iterator it = begin; it != end; ++it)*/
+	int sum2 = 0; 
+	t_start = clock();
+	for (List::Iterator it = list.begin(); it != list.end(); ++it)
+	{
+		//cout << *it << tab;
+		sum2 += *it;
+	}
+	cout << endl;
+	t_end = clock();
+	cout << "Сумма найдена за " << double(t_end - t_start) / CLOCKS_PER_SEC << " секунд\n";
+#endif // Home_Work1
+
+
+
 }
