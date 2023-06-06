@@ -87,6 +87,29 @@ public:
 			return Temp->Data;
 		}
 	};
+	class ReverseIterator
+	{
+		Element* Temp;
+	public:
+		ReverseIterator(Element* Temp) : Temp(Temp)
+		{
+#ifdef DEBUG
+			cout << "RItConstructor:\t" << this << endl;
+#endif // DEBUG
+
+		}
+		~ReverseIterator()
+		{
+#ifdef DEBUG
+			cout << "RItDestructor:\t" << endl;
+#endif // DEBUG
+		}
+		ReverseIterator& operator++()
+		{
+			Temp = Temp->pNext;
+			return *this; 
+		}
+	};
 	Iterator begin()
 	{
 		return Head;
@@ -95,6 +118,16 @@ public:
 	{
 		return nullptr;
 	}
+	ReverseIterator rbegin()
+	{
+		return Tail; 
+	}
+	ReverseIterator rend() 
+	{
+		return nullptr;
+	}
+		
+
 	//			Constructors 
 	List()
 	{
@@ -247,6 +280,7 @@ public:
 
 //#define Base_Check
 #define Home_Work1
+//#define Iterator_Perfomance
 
 void main()
 {
@@ -284,6 +318,7 @@ void main()
 	list.print();
 	list.revers_print();
 #endif // Base_Check
+#ifdef Iterator_Perfomance
 
 	clock_t t_start, t_end;
 	int sum = 0;
@@ -294,22 +329,22 @@ void main()
 
 	//List list = { 3,5,8,13,21 };
 	//list.print();
-	
+
 #ifdef Home_Work1
 	t_start = clock();
 	for (int i : list)
 	{
 		//cout << i << tab;
-		sum += i; 
+		sum += i;
 	}
 	cout << endl;
 	t_end = clock();
 	cout << "Сумма найдена за " << double(t_end - t_start) / CLOCKS_PER_SEC << " секунд\n";
-	cout << delimetr << endl; 
+	cout << delimetr << endl;
 	/*List::Iterator begin = list.begin();
 	List::Iterator end = list.end();
 	for (List::Iterator it = begin; it != end; ++it)*/
-	int sum2 = 0; 
+	int sum2 = 0;
 	t_start = clock();
 	for (List::Iterator it = list.begin(); it != list.end(); ++it)
 	{
@@ -321,6 +356,20 @@ void main()
 	cout << "Сумма найдена за " << double(t_end - t_start) / CLOCKS_PER_SEC << " секунд\n";
 #endif // Home_Work1
 
+#endif // Iterator_Perfomance
 
+	List list = { 3,5,8,13,21 };
+	for (List::Iterator it = list.begin(); it != list.end(); ++it)
+	{
+		cout << *it << tab;
+	}
+	cout << endl; 
+
+	for (List::Iterator it = list.rbegin(); it != list.rend(); --it)
+	{
+		cout << *it << tab;
+	}
+	cout << endl;
+	
 
 }
