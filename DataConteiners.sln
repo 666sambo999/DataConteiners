@@ -9,6 +9,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ForwardList", "ForwardList\
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "List2", "List2\List2.vcxproj", "{36D89E9C-D9CC-4541-915D-24EA4EC811C5}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "BinaryTree", "BinaryTree\BinaryTree.vcxproj", "{A73751EF-66E5-4174-B467-AA70514D64C5}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -41,6 +43,14 @@ Global
 		{36D89E9C-D9CC-4541-915D-24EA4EC811C5}.Release|x64.Build.0 = Release|x64
 		{36D89E9C-D9CC-4541-915D-24EA4EC811C5}.Release|x86.ActiveCfg = Release|Win32
 		{36D89E9C-D9CC-4541-915D-24EA4EC811C5}.Release|x86.Build.0 = Release|Win32
+		{A73751EF-66E5-4174-B467-AA70514D64C5}.Debug|x64.ActiveCfg = Debug|x64
+		{A73751EF-66E5-4174-B467-AA70514D64C5}.Debug|x64.Build.0 = Debug|x64
+		{A73751EF-66E5-4174-B467-AA70514D64C5}.Debug|x86.ActiveCfg = Debug|Win32
+		{A73751EF-66E5-4174-B467-AA70514D64C5}.Debug|x86.Build.0 = Debug|Win32
+		{A73751EF-66E5-4174-B467-AA70514D64C5}.Release|x64.ActiveCfg = Release|x64
+		{A73751EF-66E5-4174-B467-AA70514D64C5}.Release|x64.Build.0 = Release|x64
+		{A73751EF-66E5-4174-B467-AA70514D64C5}.Release|x86.ActiveCfg = Release|Win32
+		{A73751EF-66E5-4174-B467-AA70514D64C5}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
