@@ -1,5 +1,5 @@
 ﻿#include<iostream>
-
+#include<ctime>
 using namespace std;
 using std::cout;
 using std::cin;
@@ -18,11 +18,16 @@ protected:
 		Element(int Data, Element* pLeft = nullptr, Element* pRight = nullptr)
 			:Data(Data), pLeft(pLeft), pRight(pRight)
 		{
+#ifdef DEBUG
 			cout << "EConstructor:\t" << this << endl;
+#endif // DEBUG
+
 		}
 		~Element()
 		{
+#ifdef DEBUG
 			cout << "EDestructor:\t" << this << endl;
+#endif // DEBUG
 		}
 		friend class Tree;
 		friend class UniqueTree;
@@ -73,7 +78,7 @@ public:
 	}
 	double avg()const
 	{
-		return avg(Root);
+		return (double) sum(Root)/count(Root);
 	}
 	int depht()const
 	{
@@ -120,16 +125,20 @@ private:
 	{
 		return Root == nullptr ? 0 : sum(Root->pLeft) + sum(Root->pRight) + Root->Data;
 	}
-	double avg(Element* Root)const
+	/*double avg(Element* Root)const
 	{
 		return Root == nullptr ? 0 : (sum(Root->pLeft) + sum(Root->pRight))/(count(Root->pLeft)+count (Root->pRight));
-	}
+		return Root == nullptr ? 0 : sum(Root)/count(Root);
+	}*/
 	int depht(Element* Root)const
 	{
-		if (Root == nullptr)return 0;
-		else return depht(Root->pLeft) > depht(Root->pRight) ?
+		if (Root == nullptr)return 0; // ассоциативность слева на право
+		int l_depht = depht(Root->pLeft) + 1;
+		int r_depht = depht(Root->pRight) + 1;
+		return l_depht > r_depht ? l_depht : r_depht;
+		/*else return depht(Root->pLeft) > depht(Root->pRight) ?
 			depht(Root->pLeft) + 1 :
-			depht(Root->pRight) + 1;
+			depht(Root->pRight) + 1;*/
 		/*if (depht(Root->pLeft) > depht(Root->pRight))return depht(Root->pLeft) + 1;
 		else return depht(Root->pRight) + 1;*/
 	}
@@ -168,7 +177,8 @@ public:
 };
 
 //#define BASE_CHECK
-
+//#define DEPHT_CHECK
+#define PERFORMENCE_CHECK
 void main()
 {
 	setlocale(LC_ALL, "");
@@ -209,8 +219,56 @@ void main()
 
 #endif // BASE_CHECK
 
+#ifdef DEPHT_CHECK
 	Tree tree = { 50,25,75,16,32,64,80,17,85,91 };
 	tree.print();
-	cout << "Глубина дерева: " << tree.depht ()<< endl;
+	cout << "Глубина дерева: " << tree.depht() << endl;
+#endif // DEPHT_CHECK
+
+#ifdef PERFORMENCE_CHECK
+	clock_t t_start, t_end; // тест по времени 
+	int n;
+	cout << "Введите размер дерева: "; cin >> n;
+	Tree tree;
+	t_start = clock(); // функция клок возвращает количество тактов проца
+	//cout << "Минимальное значение в дереве: " << tree.minValue() << endl;
+	for (int i = 0; i < n; i++)
+	{
+		tree.insert(rand() % 100);
+	}
+	t_end = clock();
+	cout << "Дерево заполнено за " << double(t_end - t_start) / CLOCKS_PER_SEC << " сек.\n";
+	//tree.print(tree.getRoot());
+	//tree.print();
+	t_start = clock();
+	cout << "Минимальное значение в дереве: " << tree.minValue() << "\t";
+	t_end = clock();
+	cout << double(t_end - t_start) / CLOCKS_PER_SEC << " сек.\n";
+
+	t_start = clock();
+	cout << "максимальное значение в дереве: " << tree.maxValue() << "\t";
+	t_end = clock();
+	cout << double(t_end - t_start) / CLOCKS_PER_SEC << " сек.\n";
+
+	t_start = clock();
+	cout << "Количество элементов в дереве: " << tree.count() << "\t";
+	t_end = clock();
+	cout << double(t_end - t_start) / CLOCKS_PER_SEC << " сек.\n";
+
+	t_start = clock();
+	cout << "Сумма элементов в дереве:\t " << tree.sum() << "\t";
+	t_end = clock();
+	cout << double(t_end - t_start) / CLOCKS_PER_SEC << " сек.\n";
+
+	t_start = clock();
+	cout << "Среднее-арифметическое элементов в дереве: " << tree.avg() << "\t";
+	t_end = clock();
+	cout << double(t_end - t_start) / CLOCKS_PER_SEC << " сек.\n";
+
+	t_start = clock();
+	cout << "Глубина дерева: " << tree.depht() << "\t";
+	t_end = clock();
+	cout << double(t_end - t_start) / CLOCKS_PER_SEC << " сек.\n";
+#endif // PERFORMENCE_CHECK
 
 }
