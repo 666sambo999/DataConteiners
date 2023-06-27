@@ -178,6 +178,8 @@ void main()
 	std::advance(position, index);
 	f_list.insert_after(position, value);
 	for (int i : f_list)cout << i << tab; cout << endl;
+
+
 #endif // STL_FORWARDLIST
 
 
