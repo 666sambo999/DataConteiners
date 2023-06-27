@@ -3,6 +3,8 @@
 #include<stack>
 #include<vector>
 #include<deque>
+#include<list>
+#include<forward_list>
 
 using namespace std;
 using std::cout;
@@ -12,8 +14,9 @@ using std::cout;
 //#define STL_ARRAY
 //#define STL_STACK
 //#define STL_VECTOR
-#define STL_DEQUE
-
+//#define STL_DEQUE
+//#define STL_LIST
+#define STL_FORWARDLIST
 //template <typename T> void vector_properties(const std::vector<T>& vec);
 
 void main()
@@ -117,11 +120,72 @@ void main()
 	for (int i : deque)cout << i << tab; cout << endl; 
 #endif // STL_DEQUE
 
+
+#ifdef STL_LIST
+
+	std::list<int> list = { 3,5,8,13,21 };// []- оператор индексирования, дает прямой доступ значения по индексу 
+	/*for (int i = 0; i < list.size(); i++)ошибка 
+	{
+		cout << list[i] << tab;
+	}
+	cout << endl;*/
+	for (std::list<int>::iterator it = list.begin(); it != list.end(); ++it) 
+	{
+		cout << *it << tab;
+	}
+	cout << endl; 
+
+	int index;
+	int value;
+	do 
+	{
+		cout << "Введите индекс добавляемого элемента: "; cin >> index; 
+		if (index > list.size())cout << "Error: out of range: " << endl; 
+	} while (index > list.size());
+	cout << "Введите значение добавляемого элемента: "; cin >> value; 
+	try
+	{
+		std::list<int>::iterator position = list.begin();
+		//for (int i = 0; i < index; i++)position++;
+		std::advance(position, index);
+		list.insert(position, value);
+		for (int i : list)cout << i << tab; cout << endl;
+	}
+	catch (const std::exception& e)
+	{
+		std::cerr << e.what() << endl; 
+	}
+	list.assign({ 1020,1989,1987,1200 });
+	list.push_back(1222);
+	list.push_front(1111);
+
+	for (int i : list)cout << i << tab; cout << endl; 
+
+
+#endif // STL_LIST
+
+#ifdef STL_FORWARDLIST
+	
+	std::forward_list<int> f_list = { 3,5,8,12,16 };
+	for (int i : f_list)cout << i << tab; cout << endl;
+	f_list.push_front(2);
+	for (int i : f_list)cout << i << tab; cout << endl;
+	int index; 
+	int value;
+	cout << "Введите индекс добавляемого элемента: "; cin >> index;
+	cout << "Введите значение добавляемого элемента: "; cin >> value;
+	std::forward_list<int>::iterator position = f_list.before_begin(); 
+	std::advance(position, index);
+	f_list.insert_after(position, value);
+	for (int i : f_list)cout << i << tab; cout << endl;
+#endif // STL_FORWARDLIST
+
+
 }
 
-template <typename T> void vector_properties(const std::vector<T>& vec)
-{
-	cout << "Size: " << vec.size() << endl;
-	cout << "Max size: " << vec.max_size() << endl;
-	cout << "Capacity: " << vec.capacity() << endl;
-}
+//template <typename T> void vector_properties(const std::vector<T>& vec)
+//{
+//	cout << "Size: " << vec.size() << endl;
+//	cout << "Max size: " << vec.max_size() << endl;
+//	cout << "Capacity: " << vec.capacity() << endl;
+//}
